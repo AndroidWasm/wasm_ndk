@@ -1,6 +1,5 @@
 set(ANDROID_NDK_HOME $ENV{ANDROID_NDK_HOME})
-
-message("ANDROID_NDK_HOME=${ANDROID_NDK_HOME}")
+set(ANDROID_TOOLCHAIN_ROOT $ENV{ANDROID_CLANG_TOOLCHAIN})
 
 include("${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake")
 
@@ -10,7 +9,6 @@ include("${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake")
 #set(ANDROID_LLVM_TRIPLE wasm64-none-linux-android)
 
 set(WASM_TRIPLE wasm64-unknown-unknown)
-set(ANDROID_TOOLCHAIN_ROOT /projects/android/aosp/master/prebuilts/clang/host/linux-x86/clang-r487747)
 
 set(WASM_LIBRARY_PATH "${CMAKE_CURRENT_LIST_DIR}/../../libs")
 set(WASM_PLATROFM_SPECIFIC_INCLUDE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../include/wasm64")
