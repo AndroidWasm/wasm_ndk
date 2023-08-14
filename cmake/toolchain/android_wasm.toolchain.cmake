@@ -18,6 +18,7 @@ list(APPEND ANDROID_WASM_COMPILER_FLAGS
   -DANDROID
   --no-standard-libraries
   -fvisibility=default
+  -mno-bulk-memory
   -I${WASM_PLATROFM_SPECIFIC_INCLUDE_PATH}
   -I${CMAKE_SYSROOT}/usr/include)
 
@@ -39,6 +40,7 @@ set(CMAKE_CXX_COMPILER "${ANDROID_TOOLCHAIN_ROOT}/bin/clang++")
 #list(APPEND ANDROID_WASM_LINKER_FLAGS "-L${WASM_LIBRARY_PATH}")
 list(APPEND ANDROID_WASM_LINKER_FLAGS "-Wl,--emit-relocs")
 list(APPEND ANDROID_WASM_LINKER_FLAGS "-Wl,--no-entry")
+list(APPEND ANDROID_WASM_LINKER_FLAGS "-mno-bulk-memory")
 list(APPEND ANDROID_WASM_LINKER_FLAGS "-Wl,--allow-undefined-file=${WASM_LIBRARY_PATH}/libc.txt")
 list(APPEND ANDROID_WASM_LINKER_FLAGS "-static-libstdc++")
 
