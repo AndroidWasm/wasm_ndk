@@ -8,6 +8,8 @@ include("${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake")
 #set(ANDROID_TOOLCHAIN_NAME wasm64-linux-android)
 #set(ANDROID_LLVM_TRIPLE wasm64-none-linux-android)
 
+set(ANDROID_WASM 1)
+
 set(WASM_TRIPLE wasm64-unknown-unknown)
 
 set(WASM_LIBRARY_PATH "${CMAKE_CURRENT_LIST_DIR}/../../libs")
