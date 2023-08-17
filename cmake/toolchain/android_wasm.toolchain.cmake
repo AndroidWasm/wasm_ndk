@@ -19,6 +19,8 @@ list(APPEND ANDROID_WASM_COMPILER_FLAGS
   -g
   -DANDROID
   --no-standard-libraries
+  -mllvm
+  -wasm-omit-64-bit-function-pointer-cast
   -fvisibility=default
   -mno-bulk-memory
   -I${WASM_PLATROFM_SPECIFIC_INCLUDE_PATH}
