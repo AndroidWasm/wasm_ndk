@@ -16,7 +16,7 @@ from Andorid OpenSource Project toolchain.
    ```
    git clone --depth 1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
    ```
-1. Set ANDROID_NDK environment variable to NDK root
+1. Set ANDROID_NDK_HOME environment variable to NDK root
 1. Set ANDROID_CLANG_TOOLCHAIN environment variable to clang toolchain root
    (example: (toolchain repo root)/clang-r487747)
 
@@ -25,6 +25,7 @@ from Andorid OpenSource Project toolchain.
 Go to cmake project and execute the following commands
 ```
 mkdir build
+cd build
 cmake --toolchain $(wasm_ndk_root)/cmake/toolchain/android_wasm.toolchain.cmake ..
 cmake --build .
 ```
