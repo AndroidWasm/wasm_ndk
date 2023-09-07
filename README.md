@@ -29,3 +29,27 @@ cd build
 cmake --toolchain $(wasm_ndk_root)/cmake/toolchain/android_wasm.toolchain.cmake ..
 cmake --build .
 ```
+
+## (Optional) How to build android toolchain (in case you need to do some cherry-picks from upstream)
+
+The main document on how to build android llvm toolchain can be found here: https://android.googlesource.com/toolchain/llvm_android/
+
+Before building add upstream remote to android llvm toolchain
+
+```
+cd toolchain/llvm-project
+git remote add upstream https://github.com/llvm/llvm-project.git
+git fetch upstream
+```
+
+The android toolchain is usually couple of month behind ToT - so these are cherry pick needed to build compilable wasm binaries
+
+```
+git cherry-pick cb5bc756808367d53c870716ce42611a563421e8
+```
+
+Use following command while building to exclude windows toolchain and skip tests
+
+```
+python toolchain/llvm_android/build.py --no-build windows --skip-tests
+```
