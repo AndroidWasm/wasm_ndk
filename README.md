@@ -42,6 +42,12 @@ git remote add upstream https://github.com/llvm/llvm-project.git
 git fetch upstream
 ```
 
+crate a local branch (for `toolchain/llvm-project`)
+
+```
+repo start upstream-patches .
+```
+
 The android toolchain is usually couple of month behind ToT - so these are cherry pick needed to build compilable wasm binaries
 
 ```
