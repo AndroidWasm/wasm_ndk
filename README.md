@@ -42,7 +42,7 @@ git remote add upstream https://github.com/llvm/llvm-project.git
 git fetch upstream
 ```
 
-crate a local branch (for `toolchain/llvm-project`)
+create a local branch (for `toolchain/llvm-project`)
 
 ```
 repo start upstream-patches .
