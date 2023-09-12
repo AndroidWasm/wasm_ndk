@@ -16,9 +16,15 @@ from Andorid OpenSource Project toolchain.
    ```
    git clone --depth 1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
    ```
-1. Set ANDROID_NDK_HOME environment variable to NDK root
-1. Set ANDROID_CLANG_TOOLCHAIN environment variable to clang toolchain root
+1. Set `ANDROID_NDK_HOME` environment variable to NDK root
+1. Set `ANDROID_CLANG_TOOLCHAIN` environment variable to clang toolchain root
    (example: (toolchain repo root)/clang-r487747)
+
+You will also need the forked version of wabt:
+
+1. Clone the fork of wabt from [here](https://github.com/AndroidWasm/wabt)
+1. Build the wabt fork by typing `make` in the root of the checkout.
+1. Set `WABT_HOME` to the root of the wabt checkout.
 
 ## How to use the cmake toolchain
 
