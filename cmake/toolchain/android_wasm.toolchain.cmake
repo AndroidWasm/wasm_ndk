@@ -1,6 +1,14 @@
 set(ANDROID_NDK_HOME $ENV{ANDROID_NDK_HOME})
 set(ANDROID_TOOLCHAIN_ROOT $ENV{ANDROID_CLANG_TOOLCHAIN})
 
+if ("${ANDROID_NDK_HOME}" STREQUAL "")
+  message(FATAL_ERROR "ANDROID_NDK_HOME not set")
+endif()
+
+if ("${ANDROID_TOOLCHAIN_ROOT}" STREQUAL "")
+  message(FATAL_ERROR "ANDROID_TOOLCHAIN_ROOT not set")
+endif()
+
 include("${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake")
 
 #set(ANDROID_SYSROOT_ABI wasm64)

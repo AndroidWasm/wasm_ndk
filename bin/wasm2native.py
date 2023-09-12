@@ -26,18 +26,23 @@
 #
 
 import argparse
+import os
+import shutil
+import subprocess
 import sys
 
-import os
-import subprocess
 
 def get_wabt_home(args):
   if args.wabt_home:
     return args.wabt_home
+  wasm2c = shutil.which('wasm2c')
+  if wasm2c:
+    return os.path.dirname(os.path.dirname(wasm2c))
   wabt_home = os.environ.get('WABT_HOME')
   if not wabt_home:
     raise Exception('Cant find wasm2c: WABT_HOME environment variable is not set and --wabt_home option is not specified')
   return wabt_home
+
 
 def main(argv):
   parser = argparse.ArgumentParser(description='Convert Wasm to c++ and cmake files ready to compile with Andorid NDK')
@@ -63,4 +68,3 @@ def main(argv):
 
 if __name__ == "__main__":
   sys.exit(main(sys.argv))
-
