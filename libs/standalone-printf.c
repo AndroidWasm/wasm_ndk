@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+extern double trunc(double);
+
 typedef int32_t WORD;
 typedef uint32_t UWORD;
 typedef int64_t DWORD;
@@ -44,6 +46,47 @@ static void itoa(int64_t num, char *str) {
     *(str++) = '-';
   }
   utoa(num, 10, str);
+}
+
+static int local_atoi(const char** str) {
+  int i = 0;
+  while (**str >= '0' && **str <= '9') {
+    i = 10 * i + **str - '0';
+    ++*str;
+  }
+  return i;
+}
+
+// Note: this does not handle FLAGS_ZERO correctly for negative numbers.
+static void dtoa(double num, int prec, char* str) {
+  if (num < 0) {
+    *str++ = '-';
+    num = -num;
+  }
+  if (num > (double)0x7fffffff) {
+    // punt on values that are too large to fit in a long
+    *str++ = 'B';
+    *str++ = 'I';
+    *str++ = 'G';
+  } else {
+    double whole = (long)trunc(num);
+    itoa((long)whole, str);
+    while (*str != '\0')
+      ++str;
+    if (prec > 0) {
+      double frac = num - whole;
+      *str++ = '.';
+      while (prec > 0) {
+        --prec;
+        frac *= 10.0;
+        // note: rounding is not correct here
+        double ddig = trunc(frac);
+        frac -= ddig;
+        *str++ = (long)ddig + '0';
+      }
+    }
+  }
+  *str = '\0';
 }
 
 #define FLAGS_ZERO  (1)
@@ -91,6 +134,7 @@ static int format(void *ctx, putc_func putc, const char *fmt, va_list va) {
     else {
       int flags;
       int width;
+      int prec = 6;
       for (flags = 0; ; fmt++) {
         switch (*fmt) {
           case '0' : flags |= FLAGS_ZERO; continue;
@@ -101,10 +145,23 @@ static int format(void *ctx, putc_func putc, const char *fmt, va_list va) {
       }
       /* The '0' flag is ignored with '-' flag */
       if (flags & FLAGS_LEFT) flags &= ~FLAGS_ZERO;
-      width = atoi(fmt);
-      while (isdigit(*fmt)) fmt++;
+      width = local_atoi(&fmt);
       switch (*fmt) {
-        case 'l' : flags |= FLAGS_LONG; fmt++; break;
+        case '.' : {
+          ++fmt;
+          prec = local_atoi(&fmt);
+          break;
+        }
+      }
+      switch (*fmt) {
+        case 'l' : {
+          flags |= FLAGS_LONG; fmt++;
+          switch (*fmt) {
+            // Tolerate an extra 'l': long and long long are the same size.
+            case 'l' : fmt++; break;
+          }
+          break;
+        }
       }
       ch = *(fmt++);
       switch (ch) {
@@ -122,7 +179,8 @@ static int format(void *ctx, putc_func putc, const char *fmt, va_list va) {
           }
           break;
         }
-        case 'd' : {
+        case 'd' :
+        case 'i': {
           DWORD v = flags & FLAGS_LONG ? va_arg(va, DWORD) : va_arg(va, WORD);
           itoa(v, buf);
           if (flags & FLAGS_SPACE) {
@@ -146,6 +204,12 @@ static int format(void *ctx, putc_func putc, const char *fmt, va_list va) {
         case 'x' : {
           utoa(flags & FLAGS_LONG ? va_arg(va, UDWORD) : va_arg(va, UWORD), 16,
            buf);
+          written += format_str(ctx, putc, buf, width, flags);
+          break;
+        }
+        case 'F' :
+        case 'f' : {
+          dtoa(va_arg(va, double), prec, buf);
           written += format_str(ctx, putc, buf, width, flags);
           break;
         }
