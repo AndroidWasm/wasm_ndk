@@ -1,9 +1,31 @@
 ## What is this?
 
 This is temporary repo containing cmake toolchain for compiling
-code using Android NDK to WebAssembly. The project is currently
-in experimental stage so it would either be abandoned or merged
-to Android NDK in some way or form.
+code using Android NDK to WebAssembly.
+
+## Overview
+
+![compilation pipeline](screenshots/compilation-pipeline.png)
+
+## Current state
+
+We have a working prototype that lets us compile simple micro-benchmarks, the gzip benchmark
+from the SPECINT2000 suite, and we have also compiled one of programs from ndk-samples
+(`native-plasma`).
+
+### Gzip from SPECINT2000
+
+Gzip running on a Pixel 6a via `adb shell`:
+
+![gzip benchmark](screenshots/running-gzip.png)
+
+### Timing comparison
+
+![timing comparison](screenshots/timing.png)
+
+### Code size comparison
+
+![code size comparison](screenshots/code-size.png)
 
 ## Pre-requisites
 
