@@ -29,28 +29,77 @@ Gzip running on a Pixel 6a via `adb shell`:
 
 ## Pre-requisites
 
-You will need Android NDK and since at the moment of writing
-this NDK toolchain does not support wasm target, - clang
-from Andorid OpenSource Project toolchain.
+You will need Android NDK and since at the moment of writing this NDK toolchain
+does not support wasm target, `clang` from Android OpenSource Project
+toolchain. Moreover, you need the modified `wasm2c` from the forked WABT
+repository.
 
-1. Download NDK [here](https://developer.android.com/ndk/downloads)
-1. Clone toolchain from this [AOSP git repository](https://android-review.git.corp.google.com/admin/repos/platform/prebuilts/clang/host/linux-x86,general):
+1. (Optional) Create a working directory to hold your copy of the NDK as well as
+   the toolchain. You can use the same directory for both, or you can use
+   different locations. (We will later tie these together using environment
+   variables. See below.)
+   
+   ```
+   cd $HOME
+   mkdir XXX
+   cd XXX
+   ```
+
+2. Download NDK [here](https://developer.android.com/ndk/downloads). (At the
+   time of this writing, the current version is `r26b`.)  Then uncompress it,
+   e.g. like so, creating `$HOME/XXX/android-ndk-r26b`:
+   
+   ```
+   unzip $HOME/Downloads/android-ndk-r26b-linux.zip
+   ```
+
+3. Clone toolchain from this [AOSP git
+   repository](https://android-review.git.corp.google.com/admin/repos/platform/prebuilts/clang/host/linux-x86,general):
+   
    ```
    git clone --depth 1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
    ```
-1. Set `ANDROID_NDK_HOME` environment variable to NDK root
-1. Set `ANDROID_CLANG_TOOLCHAIN` environment variable to clang toolchain root
-   (example: (toolchain repo root)/clang-r487747)
 
-You will also need the forked version of wabt:
+   This creates `$HOME/XXX/linux-x86`.
 
-1. Clone the fork of wabt from [here](https://github.com/AndroidWasm/wabt)
-1. Build the wabt fork by typing `make` in the root of the checkout.
-1. Set `WABT_HOME` to the root of the wabt checkout.
+4. Set `ANDROID_NDK_HOME` environment variable to NDK root:
+
+   ```
+   export ANDROID_NDK_HOME=$HOME/XXX/android-ndk-r26b
+   ```
+
+5. Set `ANDROID_CLANG_TOOLCHAIN` environment variable to clang toolchain root.
+   Any version greater or equal to `r475365b` should work. The latest (and
+   confirmed to be working) version as of the time of this writing is `r510928`:
+   
+   ```
+   export ANDROID_CLANG_TOOLCHAIN=$HOME/XXX/linux-x86/clang-r510928
+   ```
+
+6. Check out the worked version of WABT (which includes `wasm2c`):
+
+   ```
+   git clone https://github.com/AndroidWasm/wabt
+   ```
+
+7. Build the wabt fork by typing `make` in the root of the checkout.
+
+   ```
+   cd wabt
+   make
+   cd ..
+   ```
+   
+8. Set `WABT_HOME` to the root of the wabt checkout:
+
+   ```
+   export WABT_HOME=$HOME/XXX/wabt
+   ```
 
 ## How to use the cmake toolchain
 
-Go to cmake project and execute the following commands
+Go to cmake project and execute the following commands:
+
 ```
 mkdir build
 cd build
@@ -60,7 +109,8 @@ cmake --build .
 
 ## (Optional) How to build android toolchain (in case you need to do some cherry-picks from upstream)
 
-The main document on how to build android llvm toolchain can be found here: https://android.googlesource.com/toolchain/llvm_android/
+The main document on how to build android llvm toolchain can be found here:
+https://android.googlesource.com/toolchain/llvm_android/
 
 Before building add upstream remote to android llvm toolchain
 
@@ -76,7 +126,8 @@ create a local branch (for `toolchain/llvm-project`)
 repo start upstream-patches .
 ```
 
-The android toolchain is usually couple of month behind ToT - so these are cherry pick needed to build compilable wasm binaries
+The android toolchain is usually couple of month behind ToT - so these are
+cherry pick needed to build compilable wasm binaries
 
 ```
 git cherry-pick cb5bc756808367d53c870716ce42611a563421e8
