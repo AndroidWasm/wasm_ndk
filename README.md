@@ -34,20 +34,22 @@ does not support wasm target, `clang` from Android OpenSource Project
 toolchain. Moreover, you need the modified `wasm2c` from the forked WABT
 repository.
 
-1. (Optional) Create a working directory to hold your copy of the NDK as well as
-   the toolchain. You can use the same directory for both, or you can use
-   different locations. (We will later tie these together using environment
-   variables. See below.)
+1. (Optional) Create a working directory (or directories) to hold your copies of
+   the NDK, the toolchain, and WABT. You can use the same directory for all
+   three, or you can use different locations. The name `my_android_wasm` is
+   arbitrary and chosen just for illustration here. Also, for brevity we use
+   just this one single directory.  (We will later tie things together using
+   environment variables. See below.)
    
    ```
    cd $HOME
-   mkdir XXX
-   cd XXX
+   mkdir my_android_wasm
+   cd my_android_wasm
    ```
 
 2. Download NDK [here](https://developer.android.com/ndk/downloads). (At the
    time of this writing, the current version is `r26b`.)  Then uncompress it,
-   e.g. like so, creating `$HOME/XXX/android-ndk-r26b`:
+   e.g. like so, creating `$HOME/my_android_wasm/android-ndk-r26b`:
    
    ```
    unzip $HOME/Downloads/android-ndk-r26b-linux.zip
@@ -60,12 +62,12 @@ repository.
    git clone --depth 1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
    ```
 
-   This creates `$HOME/XXX/linux-x86`.
+   This creates `$HOME/my_android_wasm/linux-x86`.
 
 4. Set `ANDROID_NDK_HOME` environment variable to NDK root:
 
    ```
-   export ANDROID_NDK_HOME=$HOME/XXX/android-ndk-r26b
+   export ANDROID_NDK_HOME=$HOME/my_android_wasm/android-ndk-r26b
    ```
 
 5. Set `ANDROID_CLANG_TOOLCHAIN` environment variable to clang toolchain root.
@@ -73,16 +75,18 @@ repository.
    confirmed to be working) version as of the time of this writing is `r510928`:
    
    ```
-   export ANDROID_CLANG_TOOLCHAIN=$HOME/XXX/linux-x86/clang-r510928
+   export ANDROID_CLANG_TOOLCHAIN=$HOME/my_android_wasm/linux-x86/clang-r510928
    ```
-
+   
 6. Check out the worked version of WABT (which includes `wasm2c`):
 
    ```
    git clone https://github.com/AndroidWasm/wabt
    ```
+   
+   This creates `$HOME/my_android_wasm/wabt`.
 
-7. Build the wabt fork by typing `make` in the root of the checkout.
+7. Build the WABT fork by typing `make` in the root of the checkout.
 
    ```
    cd wabt
@@ -93,7 +97,7 @@ repository.
 8. Set `WABT_HOME` to the root of the wabt checkout:
 
    ```
-   export WABT_HOME=$HOME/XXX/wabt
+   export WABT_HOME=$HOME/my_android_wasm/wabt
    ```
 
 ## How to use the cmake toolchain
