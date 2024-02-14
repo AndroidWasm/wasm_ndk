@@ -55,14 +55,17 @@ repository.
    unzip $HOME/Downloads/android-ndk-r26b-linux.zip
    ```
 
-3. Clone toolchain from this [AOSP git
-   repository](https://android-review.git.corp.google.com/admin/repos/platform/prebuilts/clang/host/linux-x86,general):
-   
-   ```
-   git clone --depth 1 https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86
-   ```
+3. There are currently no prebuilt binaries for clang that contain all the
+   necessary changes, so build the toolchain from sources by following the
+   instructions [Build
+   Instructions](https://android.googlesource.com/toolchain/llvm_android/+/master/README.md#build-instructions)
+   for the [Android Clang/LLVM
+   Toolchain](https://android.googlesource.com/toolchain/llvm_android/+/master/README.md#android-clang_llvm-toolchain).
 
-   This creates `$HOME/my_android_wasm/linux-x86`.
+   If you did this in your `$HOME`, you should now have a directory
+   `$HOME/llvm-toolchain/out/install`.  Locate the `clang-dev` directory for
+   your current development platform therein, e.g.,
+   `$HOME/llvm-toolchain/out/install/linux-x86/clang-dev`.
 
 4. Set `ANDROID_NDK_HOME` environment variable to NDK root:
 
@@ -70,12 +73,11 @@ repository.
    export ANDROID_NDK_HOME=$HOME/my_android_wasm/android-ndk-r26b
    ```
 
-5. Set `ANDROID_CLANG_TOOLCHAIN` environment variable to clang toolchain root.
-   Any version greater or equal to `r475365b` should work. The latest (and
-   confirmed to be working) version as of the time of this writing is `r510928`:
+5. Set `ANDROID_CLANG_TOOLCHAIN` environment variable to clang toolchain root,
+   which is the `clang-dev` directory from step 3. above.
    
    ```
-   export ANDROID_CLANG_TOOLCHAIN=$HOME/my_android_wasm/linux-x86/clang-r510928
+   export ANDROID_CLANG_TOOLCHAIN=$HOME/llvm-toolchain/out/install/linux-x86/clang-dev
    ```
    
 6. Check out the worked version of WABT (which includes `wasm2c`):
@@ -100,6 +102,14 @@ repository.
    export WABT_HOME=$HOME/my_android_wasm/wabt
    ```
 
+9. Clone this repository and point `WASM_NDK` to it:
+
+   ```
+   cd $HOME/my_android_wasm
+   git clone https://github.com/AndroidWasm/wasm_ndk
+   export WASM_NDK=$HOME/my_android_wasm/wasm_ndk
+   ```
+
 ## How to use the cmake toolchain
 
 Go to cmake project and execute the following commands:
@@ -107,7 +117,7 @@ Go to cmake project and execute the following commands:
 ```
 mkdir build
 cd build
-cmake --toolchain $(wasm_ndk_root)/cmake/toolchain/android_wasm.toolchain.cmake ..
+cmake --toolchain $WASM_NDK/cmake/toolchain/android_wasm.toolchain.cmake ..
 cmake --build .
 ```
 
