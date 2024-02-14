@@ -18,7 +18,7 @@ include("${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake")
 
 set(ANDROID_WASM 1)
 
-set(WASM_TRIPLE wasm64-unknown-unknown)
+set(WASM_TRIPLE wasm64-unknown-nativeandroid)
 
 set(WASM_LIBRARY_PATH "${CMAKE_CURRENT_LIST_DIR}/../../libs")
 set(WASM_PLATROFM_SPECIFIC_INCLUDE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../include/wasm64")
@@ -27,8 +27,6 @@ list(APPEND ANDROID_WASM_COMPILER_FLAGS
   -g
   -DANDROID
   --no-standard-libraries
-  -mllvm
-  -wasm-omit-64-bit-function-pointer-cast
   -fvisibility=default
   -mno-bulk-memory
   -I${WASM_PLATROFM_SPECIFIC_INCLUDE_PATH}
