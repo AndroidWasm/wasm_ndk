@@ -36,6 +36,7 @@ list(APPEND ANDROID_WASM_COMPILER_FLAGS_CXX "-I${CMAKE_SYSROOT}/usr/include/c++/
 
 # This is a hack to enable pthread support in __config include file
 # TODO: This is probably not be entirely correct.
+list(APPEND ANDROID_WASM_COMPILER_FLAGS_CXX "-D__ANDROID__")
 list(APPEND ANDROID_WASM_COMPILER_FLAGS_CXX "-D__wasi__")
 
 set(CMAKE_C_COMPILER_TARGET   ${WASM_TRIPLE})
