@@ -1,0 +1,15 @@
+#STUB
+android_dlopen_ext
+dladdr
+dlclose
+dlerror
+dlopen
+dlsym
+android_get_application_target_sdk_version
+dlvsym
+__cfi_shadow_size
+__cfi_slowpath
+__cfi_slowpath_diag
+android_get_LD_LIBRARY_PATH
+__cfi_init
+android_handle_signal
