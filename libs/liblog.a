@@ -7,4 +7,3 @@ __android_log_is_loggable_len
 __android_log_print
 __android_log_vprint
 __android_log_write
-

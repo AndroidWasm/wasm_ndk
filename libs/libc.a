@@ -1322,5 +1322,3 @@ memset_explicit
 posix_spawn_file_actions_addchdir_np
 posix_spawn_file_actions_addfchdir_np
 timespec_getres
-wasm_open2
-wasm_open3
