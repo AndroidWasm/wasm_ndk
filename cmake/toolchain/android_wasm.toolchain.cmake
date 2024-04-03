@@ -26,7 +26,8 @@ set(WASM_PLATFORM_SPECIFIC_INCLUDE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../include
 list(APPEND ANDROID_WASM_COMPILER_FLAGS
   -g
   -DANDROID
-  --no-standard-libraries
+  -nostartfiles
+#  --no-standard-libraries
   -fvisibility=default
   -mno-bulk-memory
   -I${WASM_PLATFORM_SPECIFIC_INCLUDE_PATH}
