@@ -18,7 +18,9 @@ include("${ANDROID_NDK_HOME}/build/cmake/android.toolchain.cmake")
 
 set(ANDROID_WASM 1)
 
-set(WASM_TRIPLE wasm64-unknown-nativeandroid)
+if ("${WASM_TRIPLE}" STREQUAL "")
+  set(WASM_TRIPLE wasm64-unknown-unknown)
+endif()
 
 set(WASM_LIBRARY_PATH "${CMAKE_CURRENT_LIST_DIR}/../../libs")
 set(WASM_PLATFORM_SPECIFIC_INCLUDE_PATH "${CMAKE_CURRENT_LIST_DIR}/../../include/wasm64")
